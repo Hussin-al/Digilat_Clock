@@ -1,0 +1,15 @@
+import time
+import serial
+
+# Replace 'COM3' with your Arduino's port and 9600 with the baud rate
+ser = serial.Serial('COM9', 9600)
+
+while True:
+    now = time.localtime()
+    
+    # Format the time as a string: Hour:Minute:Second
+    time_str = time.strftime("%H:%M:%S", now)
+    # Encode the string and send it to Arduino
+    ser.write(time_str.encode())
+    time.sleep(0.3)
+

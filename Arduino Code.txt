@@ -1,0 +1,113 @@
+/*
+ The circuit:
+ * LCD RS pin to digital pin 12
+ * LCD Enable pin to digital pin 11
+ * LCD D4 pin to digital pin 5
+ * LCD D5 pin to digital pin 4
+ * LCD D6 pin to digital pin 3
+ * LCD D7 pin to digital pin 2
+ * LCD R/W pin to ground
+ * 10K resistor:
+   * ends to +5V and ground
+   * wiper to LCD VO pin (pin 3)
+*/
+
+// include the library code:
+#include <LiquidCrystal.h>
+#include <DHT11.h>
+
+//DHT Instance
+DHT11 dht11(A1);
+
+// initialize the library by associating any needed LCD interface pin
+// with the arduino pin number it is connected to
+const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+int light;
+String strLight = "";
+int temperature = 0;
+String strTemperature = "";
+int humidity = 0;
+String strHumidity = "";
+
+bool isValidFormat = true;
+
+String timestamp = "";
+
+void setup() {
+  Serial.begin(9600);
+  Serial.setTimeout(1);
+  lcd.begin(16, 2);
+  lcd.setCursor(0, 0);
+  lcd.print(" ");
+  
+}
+
+void loop() {
+timestamp = returnTimestampFromPy();
+
+isValidFormat = true;
+if (timestamp.length() == 5) {
+  for (int i = 0; i < 5; i++) {
+    if (i == 2) {
+      if (timestamp[i] != ':') {
+        isValidFormat = false;
+        break;
+      }
+    } else {
+      if (!isdigit(timestamp[i])) {
+        isValidFormat = false;
+        break;
+      }
+    }
+  }
+}
+
+if (isValidFormat) {
+  // Timestamp has the correct format
+  lcd.setCursor(0, 0);
+  lcd.print("Time: " + timestamp);
+  
+}
+lcd.setCursor(14, 0);
+lcd.print("  ");
+  
+//Reading brightness
+light = analogRead(A0);
+String strLight = String(light);
+
+//Reading temperature and humidity  
+dht11.readTemperatureHumidity(temperature, humidity);
+
+strTemperature = String(temperature);
+strHumidity = String(humidity);
+
+// Set the cursor to the 8th position on the second row
+lcd.setCursor(0, 1);
+//Display light value
+lcd.print("L:" + strLight); //L:123
+
+lcd.setCursor(6, 1);
+//Display temperature value        
+lcd.print("T:" + strTemperature);  //T:12
+
+lcd.setCursor(11, 1);
+lcd.print("H:" + strHumidity);   //H:123
+
+delay(50);
+}
+
+String returnTimestampFromPy(){
+  if (Serial.available() > 0){ //Check 
+    String input = Serial.readStringUntil("\n");
+    //String input = Serial.readString();
+    if(input != ""){
+      return input;
+    }
+
+  } else {
+   return "EROR";
+
+  }
+}
+
