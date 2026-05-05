@@ -1,1 +1,5 @@
 In diesem Repository entwickeln wir ein Projekt für eine Digitale Uhr. Als Programmiersprache verwenden wir Arduino, und zur Anzeige der Daten nutzen wir ein 16x2 LCD-Display. Unser Projekt "Digitale Uhr" bietet folgende Funktionen: Uhrzeit: Anzeige der aktuellen Zeit. Luftfeuchtigkeit: Messung und Darstellung der Umgebungsfeuchtigkeit. Temperatur: Anzeige der aktuellen Temperatur. Helligkeit: Erfassung und Darstellung der Umgebungshelligkeit. Dieses Projekt kombiniert mehrere Sensoren, um eine vielseitige und informative digitale Uhr zu erstellen.
+
+
+EN
+In this repository we are developing a project for a digital clock. We use Arduino as the programming language and a 16x2 LCD display to show the data. Our “Digital Clock” project offers the following functions: Time: Display of the current time. Humidity: Measurement and display of the ambient humidity. Temperature: Display of the current temperature. Brightness: Measurement and display of the ambient brightness. This project combines several sensors to create a versatile and informative digital clock.
